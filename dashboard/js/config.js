@@ -46,7 +46,20 @@ export const CONFIG = {
     flagUrl: "https://flagcdn.com",
   },
 
-  /* ── 5. СПИСОК ВЕЩЕЙ ── */
+  /* ── 5. МОЁ РАСПИСАНИЕ — копия ответа API schedule.sutd.ru.
+     Прямой запрос с GitHub Pages блокируется (CORS), поэтому ответ сохранён в файл
+     data/schedule.json. Формат файла такой же, как у живого API:
+       GET https://schedule.sutd.ru/api/group_schedule/?group_id=310&lang=ru
+     Чтобы обновить расписание — замените содержимое data/schedule.json. */
+  timetable: {
+    url: "data/schedule.json",
+    params: {},
+    headers: {},
+    sourceName: "schedule.sutd.ru (копия)",
+    sourceUrl: "https://schedule.sutd.ru/",
+  },
+
+  /* ── 6. СПИСОК ВЕЩЕЙ ── */
   todo: {
     storageKey: "roseTripTodo",
     defaults: ["Паспорт и билеты", "Зарядка и павербанк", "Банковская карта", "Аптечка"],
