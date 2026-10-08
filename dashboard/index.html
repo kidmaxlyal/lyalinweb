@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4f0eb" />
+    <meta name="description" content="Дашборд «Поездка»: погода, страна назначения, список вещей и цитата в дорогу." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Liter&family=Pacifico&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+
+    <script>
+      (function () {
+        var theme = "light";
+        try { theme = localStorage.getItem("roseTheme") || theme; } catch (e) {}
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <title>Поездка — Dashboard · Rose Design</title>
+  </head>
+
+  <body>
+    <div class="page-bg" aria-hidden="true"></div>
+    <div class="sky" aria-hidden="true">
+      <img class="cloud c1" src="../images/cloud.svg" alt="" />
+      <img class="cloud c2" src="../images/cloud.svg" alt="" />
+      <img class="cloud c3" src="../images/cloud.svg" alt="" />
+    </div>
+    <div class="bull-cursor" id="bullCursor" aria-hidden="true"><img src="../images/cow.png" alt="" /></div>
+
+    <header class="header">
+      <a class="glass header__brand" href="../index.html">← Maxim Lyalin</a>
+      <div class="header__actions">
+        <button class="glass theme-toggle" id="themeBtn" type="button" aria-label="Сменить тему">
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" /></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" /></svg>
+        </button>
+        <button class="glass burger" id="burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="nav">
+          <img src="../images/burger.png" alt="" />
+        </button>
+      </div>
+      <nav class="nav" id="nav" aria-label="Меню">
+        <a href="../index.html">← Портфолио</a>
+        <a href="../index.html#portfolio">Работы</a>
+        <a href="../index.html#contact">Контакты</a>
+        <a href="index.html" aria-current="page">Дашборд</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="dash-hero">
+        <img class="dash-hero__logo" src="../images/logo.svg" alt="" aria-hidden="true" />
+        <div class="dash-hero__inner">
+          <div class="kicker"><span>Personal dashboard</span><span>Rose Design — 2026</span></div>
+          <div class="dash-hero__row">
+            <div>
+              <h1 class="title">Поездка</h1>
+              <p class="dash-hero__lead">Погода, страна назначения, список вещей и цитата в дорогу — всё, что нужно перед отъездом.</p>
+            </div>
+            <button class="dash-cow" id="dashCow" type="button" aria-label="Покрутить корову">
+              <img src="../images/cow.png" alt="" />
+              <span class="dash-cow__shadow" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="dashboard" class="dashboard-grid" aria-label="Виджеты поездки"></section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__logo">Rose<br />Design</div>
+      <div class="footer__small">
+        <div>Maxim Lyalin</div>
+        <div>Дашборд «Поездка»</div>
+        <div>Источники: Open-Meteo · REST Countries · ZenQuotes</div>
+      </div>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

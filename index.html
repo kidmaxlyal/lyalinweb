@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4f0eb" />
+    <meta name="description" content="Rose Design — personal design portfolio." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- ШРИФТЫ. Чтобы заменить: вставьте сюда новую ссылку с fonts.google.com
+         (Get embed code → href), затем поменяйте названия в style.css
+         (--font-display, --font-body, --font-accent). Подробно — в шпаргалке сверху style.css. -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Liter&family=Pacifico&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- ТЕМА: применяем сразу, до отрисовки, чтобы страница не мигала.
+         Тема по умолчанию — "light" (поменяйте на "dark", если нужна тёмная).
+         Выбор посетителя запоминается в localStorage. -->
+    <script>
+      (function () {
+        var theme = "light";
+        try { theme = localStorage.getItem("roseTheme") || theme; } catch (e) {}
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <title>Rose Design — Portfolio</title>
+  </head>
+
+  <body class="is-cow-locked">
+    <!-- СЛОИ: 0 фон (--page-bg) → 1 газета (body::after) → 2 облака → 3 контент -->
+    <div class="page-bg" id="pageBg" aria-hidden="true"></div>
+
+    <!-- Облака плывут за ВСЕМИ секциями, поэтому стыков между страницами нет -->
+    <div class="sky" aria-hidden="true">
+      <img class="cloud c1" src="images/cloud.svg" alt="" />
+      <img class="cloud c2" src="images/cloud.svg" alt="" />
+      <img class="cloud c3" src="images/cloud.svg" alt="" />
+    </div>
+
+    <!-- Корова-курсор и корова-путешественница (двигаются скриптом) -->
+    <div class="bull-cursor" id="bullCursor" aria-hidden="true"><img src="images/cow.png" alt="" /></div>
+    <div class="travel-cow" id="travelCow" aria-hidden="true">
+      <div class="travel-cow__inner">
+        <img src="images/cow.png" alt="" />
+        <div class="travel-cow__shadow"></div>
+      </div>
+    </div>
+    <div class="progress" id="progress"></div>
+
+    <!-- ═══ ШАПКА ═══ -->
+    <header class="header">
+      <a class="glass header__brand" href="#cowIntro">Maxim Lyalin</a>
+      <nav class="nav" id="nav">
+        <a href="#about" data-i18n="navAbout">Обо мне</a>
+        <a href="#services" data-i18n="navServices">Услуги</a>
+        <a href="#portfolio" data-i18n="navPortfolio">Работы</a>
+        <a href="#skills" data-i18n="navSkills">Навыки</a>
+        <a href="#cow-game" data-i18n="navGame">Игра</a>
+        <!-- ССЫЛКА НА ДАШБОРД: открывает вторую страницу из папки dashboard/ -->
+        <a href="dashboard/index.html" data-i18n="navDashboard">Дашборд</a>
+        <a href="#contact" data-i18n="navContact">Контакты</a>
+      </nav>
+      <div class="header__actions">
+        <button class="glass" id="langBtn" type="button">EN</button>
+        <!-- Смена темы: луна/солнце переключаются стилями по data-theme -->
+        <button class="glass theme-toggle" id="themeBtn" type="button" aria-label="Сменить тему">
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" /></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" /></svg>
+        </button>
+        <button class="glass burger" id="burger" type="button" aria-label="Menu">
+          <img src="images/burger.png" alt="" />
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- ═══ 1. ИНТРО С КОРОВОЙ (крутите колесо мыши / свайп) ═══ -->
+      <section class="cow-intro" id="cowIntro">
+        <div class="cow-intro__title"><img src="images/logo.svg" alt="Rose Design" /></div>
+        <div class="cow-intro__stage">
+          <div class="cow-intro__bob"><img src="images/cow.png" id="cow" alt="Cow" /></div>
+          <div class="cow-intro__shadow"></div>
+        </div>
+        <div class="cow-progress">
+          <svg viewBox="0 0 100 100">
+            <circle class="cow-progress__bg" cx="50" cy="50" r="46"></circle>
+            <circle class="cow-progress__bar" id="cowProgressBar" cx="50" cy="50" r="46"></circle>
+          </svg>
+          <div class="cow-hint"><span class="cow-hint__dot"></span><span id="cowHintText">Загрузка...</span></div>
+        </div>
+      </section>
+
+      <!-- ═══ 2. HERO ═══ -->
+      <section class="section hero">
+        <div class="hero__script">Rose</div>
+        <div class="section__inner">
+          <div class="kicker"><span data-i18n="heroEyebrow">Креативное портфолио</span><span>Rose Design — 2026</span></div>
+          <h1 class="title"><span>Максим</span><span class="hero__surname">Лялин</span></h1>
+          <div class="hero__meta">
+            <p id="heroRole"></p>
+            <a class="cta" href="#portfolio"><span data-i18n="heroCta">Смотреть работы</span><span>↗</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 3. ОБО МНЕ ═══ -->
+      <section class="section" id="about">
+        <div class="section__inner">
+          <div class="kicker reveal"><span data-i18n="navAbout">Кто я?</span></div>
+          <div class="about__grid">
+            <div class="about__copy reveal">
+              <p><strong id="aboutName"></strong></p>
+              <p data-i18n="aboutText"></p>
+              <p><span data-i18n="aboutExtra"></span> <strong id="extraEducation"></strong></p>
+            </div>
+            <div class="about__photo reveal">
+  <img src="images/photo.jpg" alt="" loading="lazy" />
+</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 4. УСЛУГИ (стеклянная панель; каждая строка — ссылка на форму заявки) ═══ -->
+      <section class="section" id="services">
+        <div class="section__inner panel panel--brown">
+          <div class="kicker reveal"><span data-i18n="navServices">Услуги</span></div>
+          <a class="service reveal" href="#contactForm"><span class="service__num">1</span><span class="service__name" data-i18n="service1"></span><span>↗</span></a>
+          <a class="service reveal" href="#contactForm"><span class="service__num">2</span><span class="service__name" data-i18n="service2"></span><span>↗</span></a>
+          <a class="service reveal" href="#contactForm"><span class="service__num">3</span><span class="service__name" data-i18n="service3"></span><span>↗</span></a>
+          <a class="service reveal" href="#contactForm"><span class="service__num">4</span><span class="service__name" data-i18n="service4"></span><span>↗</span></a>
+        </div>
+      </section>
+
+      <!-- ═══ 5. РАБОТЫ (карточки создаёт script.js из списка PROJECTS) ═══ -->
+      <section class="section" id="portfolio">
+        <div class="section__inner">
+          <div class="kicker reveal"><span data-i18n="navPortfolio">Работы</span></div>
+          <h2 class="title reveal" data-i18n="portfolioTitle"></h2>
+          <div class="portfolio__grid" id="projectGrid"></div>
+        </div>
+      </section>
+
+      <!-- ═══ 6. НАВЫКИ (создаёт script.js из списка SKILLS) ═══ -->
+      <section class="section" id="skills">
+        <div class="section__inner">
+          <div class="kicker reveal"><span data-i18n="navSkills">Навыки</span></div>
+          <h2 class="title reveal" data-i18n="skillsTitle"></h2>
+          <div class="skills__grid" id="skillsGrid"></div>
+        </div>
+      </section>
+
+      <!-- ═══ 7. ОБРАЗОВАНИЕ ═══ -->
+      <section class="section education">
+        <div class="section__inner panel panel--light">
+          <div class="kicker reveal"><span data-i18n="navEducation">Образование</span></div>
+          <div class="edu-item reveal">
+            <h3 data-i18n="edu1Title"></h3>
+            <p data-i18n="edu1Text"></p>
+          </div>
+          <div class="edu-item reveal">
+            <h3 data-i18n="edu2Title"></h3>
+            <p data-i18n="edu2Text"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 8. МИНИ-ИГРА ═══ -->
+      <section class="section" id="cow-game">
+        <div class="section__inner">
+          <div class="kicker reveal"><span data-i18n="navGame">Игра</span></div>
+          <div class="game__head reveal">
+            <div>
+              <h2 class="title">Cow game</h2>
+              <p class="game__hint" data-i18n="gameHint"></p>
+            </div>
+            <div class="game__score"><span data-i18n="gameScore"></span><strong id="cowScore">0</strong></div>
+          </div>
+          <div class="game__arena reveal" id="cowArena">
+            <button class="game__cow" id="gameCow" type="button" aria-label="Catch the cow">
+              <!-- cow2.png лежит в assets/; если файла нет — подставится старая корова -->
+              <img src="assets/cow2.png" alt="" onerror="this.onerror=null;this.src='images/cow.png'" />
+            </button>
+            <div class="game__message" id="cowMessage" data-i18n="gameReady"></div>
+          </div>
+          <div class="game__controls reveal">
+            <button class="cta" id="cowStart" type="button"><span data-i18n="gameStart"></span><span>↗</span></button>
+            <div class="game__stat"><span data-i18n="gameTime"></span> <strong id="cowTimer">20</strong></div>
+            <div class="game__stat"><span data-i18n="gameBest"></span> <strong id="cowBest">0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 9. КОНТАКТЫ ═══ -->
+      <section class="section" id="contact">
+        <div class="section__inner">
+          <div class="kicker reveal"><span data-i18n="navContact">Контакты</span></div>
+          <div class="contact__grid">
+            <div class="reveal">
+              <div class="title" data-i18n="contactTitle"></div>
+              <div class="socials">
+                <a class="glass" id="telegramLink" href="#" target="_blank" rel="noopener">Telegram</a>
+                <a class="glass" id="instagramLink" href="#" target="_blank" rel="noopener">Instagram</a>
+                <a class="glass" id="behanceLink" href="#" target="_blank" rel="noopener">Behance</a>
+                <a class="glass" id="emailLink" href="#">E-mail</a>
+              </div>
+            </div>
+            <form class="form reveal" id="contactForm">
+              <input class="field" type="text" required data-ph-ru="Ваше имя" data-ph-en="Your name" />
+              <input class="field" type="email" required data-ph-ru="Ваш e-mail" data-ph-en="Your e-mail" />
+              <textarea class="field" required data-ph-ru="Расскажите о проекте" data-ph-en="Tell me about your project"></textarea>
+              <button class="cta" type="submit"><span data-i18n="send"></span><span>↗</span></button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═══ ПОДВАЛ ═══ -->
+    <footer class="footer">
+      <div class="footer__logo">Rose<br />Design</div>
+      <div class="footer__small">
+        <div id="footerName"></div>
+        <div>© 2026 Rose Design</div>
+        <div data-i18n="footerText"></div>
+      </div>
+    </footer>
+
+    <button class="glass top" id="topBtn" type="button" aria-label="Back to top">↑</button>
+
+    <script src="script.js"></script>
+  </body>
+</html>
