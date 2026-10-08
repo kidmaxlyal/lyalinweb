@@ -63,7 +63,7 @@ if (dashCow) {
 
 /* ═══ 5. ВИДЖЕТЫ — В КОНЦЕ ═══ */
 const dashboard = new Dashboard("dashboard");
-["weather", "country", "todo", "quote"].forEach((type) => {
+["weather", "country", "todo", "quote", "timetable"].forEach((type) => {
     try {
         dashboard.addWidget(type);
     } catch (error) {
