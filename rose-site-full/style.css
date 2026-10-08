@@ -1,0 +1,1065 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ROSE DESIGN — СТИЛИ
+
+   ШПАРГАЛКА: КАК МЕНЯТЬ ЦВЕТА И ШРИФТЫ
+   ───────────────────────────────────────────────────────────────────────
+   Все цвета и шрифты лежат в блоке «1. ЦВЕТА И ШРИФТЫ» ниже.
+   Менять нужно ТОЛЬКО значения после двоеточия — остальной код не трогать.
+
+   ЦВЕТ ВСЕГО САЙТА
+     --paper   основной цвет фона
+     --ink     цвет текста
+     --brown   главный акцент: кнопки, полоски навыков, иконки, индикатор
+               прокрутки, подчёркивания в форме, плашки
+
+   ЦВЕТ КОНКРЕТНОЙ СТРАНИЦЫ (секции)
+     Услуги        → --services-bg, --services-text       (стеклянная панель)
+     Образование   → --education-bg, --education-text     (светлая панель)
+     Подвал        → --footer-bg, --footer-text           (тоже стекло)
+     Стекло панелей → --panel-glass-* (блок 1)
+     Hero (Максим) → --hero-text (текст), --hero-script («Rose» — бледная надпись)
+     Игра          → --game-sky (небо), --game-grass (трава)
+     Меню          → --nav-bg (фон), --nav-text (текст)
+     ТЕМА          → кнопка ☾/☀ рядом с бургером. Светлая = блок :root,
+                     тёмная = блок [data-theme="dark"] (ниже).
+     Фон страницы  → --page-bg-light (светлая) и --page-bg-dark (тёмная)
+     Цвет текста секций (чтобы не терялся на любом фоне):
+                     --hero-text, --about-text, --portfolio-text,
+                     --skills-text, --game-text, --contact-text,
+                     --services-text, --education-text, --footer-text
+                     Покрасили секцию в тёмный цвет — поставьте ей светлый текст.
+     Кнопки (стекло) → --glass-bg, --glass-border, --glass-blur … (блок 1)
+     Фон страницы  → --page-bg (блок 1, самая верхняя из «технических»)
+     Фон всей секции (на всю ширину экрана):
+                     --bg-hero, --bg-about, --bg-portfolio, --bg-skills,
+                     --bg-game, --bg-contact   (сейчас прозрачные = видна бумага)
+     Цвет можно писать так: #452317, rgb(69,35,23) или название (navy).
+     Полупрозрачный: rgba(69, 35, 23, 0.5) — последняя цифра от 0 до 1.
+
+   ГАЗЕТНАЯ ТЕКСТУРА (images/paper.jpg)
+     Лежит поверх ВСЕГО, так что остаётся видна, даже если вы покрасили
+     секцию или панель в бордовый/любой цвет.
+     --paper-strength  сила (0 — нет … 1 — максимум)
+     --paper-blend     режим: multiply / soft-light / overlay / normal
+     Если на тёмном цвете текстуры не видно — поставьте soft-light или overlay
+     и поднимите --paper-strength до 0.4–0.6.
+
+   ШРИФТЫ (3 штуки, в блоке ниже)
+     --font-display  названия, меню, цифры (сейчас Oswald)
+     --font-body     обычный текст, кнопки, подписи (сейчас Liter)
+     --font-accent   рукописные надписи: «Rose», номера услуг (сейчас Pacifico)
+     --font-title    ТОЛЬКО заголовки страниц (Максим Лялин, Rose, Работы, Навыки,
+                     Cow game, Давайте поговорим) — ваш шрифт из fonds/
+     Как заменить шрифт:
+       1. Выберите шрифт на fonts.google.com (с пометкой «Cyrillic»,
+          иначе русские буквы будут другим шрифтом).
+       2. Нажмите «Get font» → «Get embed code» → скопируйте ссылку (href).
+       3. В index.html замените ссылку на шрифты (там есть пометка).
+       4. Здесь поменяйте название: --font-display: "Новый шрифт", sans-serif;
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ═══ 0. СВОЙ ШРИФТ ДЛЯ ЗАГОЛОВКОВ СТРАНИЦ ═══
+   Файл лежит в папке fonds/ рядом с index.html.
+   Чтобы подключить другой файл — поменяйте ТОЛЬКО имя в url(...).
+   font-weight: 100 900 — чтобы браузер не «додумывал» жирность и не делал
+   фальшивый bold из вашего начертания.
+   Если файл не найден — заголовки автоматически покажутся шрифтом Oswald. */
+@font-face {
+  font-family: "Hero Font";
+  src: url("fonds/hero.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ═══ 1. ЦВЕТА И ШРИФТЫ ═══ */
+:root {
+  /* — Общие цвета — */
+  --paper: #f4f0eb;              /* основной фон сайта */
+  --paper-2: #ebe4db;            /* чуть темнее: карточки, фото-заглушка, полоски */
+  --ink: #301806;                /* цвет текста (в тёмной теме — светлый) */
+  --light-text: #ecb46f;         /* ВСЕГДА светлый текст — для тёмных плашек, не зависит от темы */
+  color-scheme: light;           /* подсказка браузеру: родные элементы (поля, скролл) — светлые */
+  --brown: #693624;              /* главный акцент (кнопки, навыки, иконки) */
+  --line: color-mix(in srgb, var(--ink) 18%, transparent); /* тонкие линии: берут цвет текста */
+
+  /* — Цвета страниц — */
+  --hero-text: var(--hero-text);        /* текст hero (фон hero тёмно-коричневый → текст светлый) */
+  --hero-script: var(--hero-text);       /* большая надпись «Rose» (она бледная) */
+  --about-text: var(--ink);              /* текст остальных секций: по умолчанию следует за темой */
+  --portfolio-text: var(--ink);
+  --skills-text: var(--ink);
+  --game-text: var(--ink);
+  --contact-text: var(--ink);
+  --services-bg: var(--panel-glass-bg);  /* панель «Услуги» (стекло; можно задать и сплошной цвет) */
+  --services-text: var(--ink);
+  --education-bg: var(--paper-2);        /* панель «Образование» */
+  --education-text: var(--ink);
+  --footer-bg: var(--panel-glass-bg);    /* подвал (стекло) */
+  --footer-text: var(--ink);
+  --game-sky: #cfe9f7;                   /* небо в игре */
+  --game-grass: #b9d98a;                 /* трава в игре */
+  --nav-bg: rgba(69, 35, 23, 0.68);      /* выезжающее меню */
+  --nav-text: var(--light-text);         /* меню всегда на тёмной плашке */
+
+  /* — Фон всей секции. transparent = прозрачный (видна бумага и облака) — */
+  --bg-hero:  transparent;
+  --bg-about: transparent;
+  --bg-portfolio: transparent;
+  --bg-skills: transparent;
+  --bg-game: transparent;
+  --bg-contact: transparent;
+
+  /* — ФОН СТРАНИЦЫ (для разработчика, интерфейса для пользователя нет) —
+     У каждой темы свой фон. Меняйте эти две строки. Подойдёт цвет, градиент или картинка:
+       --page-bg-light: #e8dccb;
+       --page-bg-light: linear-gradient(160deg, #f4f0eb, #d9c7b0);
+       --page-bg-dark:  url("assets/bg-dark.jpg") center / cover no-repeat;
+     Из консоли браузера (с плавным переходом, для текущей темы): setPageBg("#1c1010")
+     Текст при этом не ломается: его цвет задаёт тема, а не фон. Если на картинке
+     текст плохо читается — усильте затемнение/осветление в --page-scrim. */
+  --page-bg-light: #f4f0eb;
+  --page-bg-dark: #1a110e;
+  --page-bg: var(--page-bg-light);        /* активный фон — переключается темой, не трогайте */
+  --page-scrim: transparent;     /* полупрозрачная вуаль поверх фона: rgba(0,0,0,0.3) затемнит картинку */
+  --page-bg-fade: 0.4s;          /* длительность плавной смены фона (0.3–0.5s) */
+  --cloud-opacity: 0.55;         /* прозрачность облаков */
+  --intro-logo-filter: blur(3px);/* размытие логотипа на первой странице (цвета картинки не трогаем) */
+
+  /* — Игра: картинки в папке assets/. Если файла нет — виден запасной цвет
+       (--game-sky / --game-grass выше) — */
+  --game-sky-img: url("assets/sky.png");
+  --game-grass-img: url("assets/grass.png");
+
+  /* — Стеклянные кнопки (Liquid Glass). Светлая тема — по умолчанию — */
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-bg-hover: rgba(255, 255, 255, 0.26);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-highlight: rgba(255, 255, 255, 0.4);   /* блик по верхнему краю */
+  --glass-shadow: 0 8px 24px rgba(69, 35, 23, 0.18);
+  --glass-glow: 0 0 22px rgba(255, 255, 255, 0.35);
+  --glass-blur: 20px;
+  --glass-blur-hover: 28px;
+  --glass-text: var(--ink);
+
+  /* — Стеклянные панели («Услуги», подвал): крупные поверхности Liquid Glass.
+       Чуть плотнее кнопок, чтобы читались на светлом фоне — */
+  --panel-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12));
+  --panel-glass-border: rgba(255, 255, 255, 0.45);
+  --panel-glass-highlight: rgba(255, 255, 255, 0.6);
+  --panel-glass-shadow: 0 18px 50px rgba(69, 35, 23, 0.16);
+  --panel-glass-blur: 24px;
+  --panel-line: rgba(69, 35, 23, 0.2);           /* линии внутри стеклянных панелей */
+  --panel-hover: rgba(255, 255, 255, 0.28);      /* подсветка строки при наведении */
+
+  /* — Шрифты (как заменить — см. шпаргалку сверху) — */
+  --font-display: "Oswald", "Arial Narrow", sans-serif;   /* названия, меню, цифры */
+  --font-body: "Liter", system-ui, sans-serif;            /* основной текст */
+  --font-accent: "Pacifico", cursive;                     /* рукописный акцент */
+  --font-title: "Hero Font", var(--font-display);         /* заголовки страниц: ваш шрифт, запасной — Oswald */
+
+  /* — Бумага и зерно — */
+  --paper-strength: 0.25;        /* видимость газетной текстуры: 0 — нет, 1 — полностью */
+  --paper-blend: multiply;       /* как текстура ложится на цвет:
+                                    multiply — затемняет (классика, лучше на светлых цветах)
+                                    soft-light или overlay — заметнее на тёмных (бордовый, коричневый)
+                                    normal — просто полупрозрачная картинка сверху */
+
+  /* — Технические — */
+  --max: 1400px;                 /* максимальная ширина контента */
+  --ease: cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+/* ТЁМНАЯ ТЕМА: включается атрибутом <html data-theme="dark"> (кнопка рядом с бургером).
+   Меняет базовые цвета, стекло и фон страницы. Тексты секций следуют за --ink сами. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #1a110e;
+  --paper-2: #2b1d18;
+  --ink: #f4f0eb;                        /* светлый текст на тёмном фоне */
+  --brown: #c98f6a;                      /* акцент светлее, чтобы читался на тёмном */
+  --page-bg: var(--page-bg-dark);
+  --page-scrim: rgba(20, 12, 10, 0.35);  /* затемняет картинку-фон, чтобы текст читался */
+  --cloud-opacity: 0.12;
+  --paper-strength: 0.4;
+  --paper-blend: soft-light;
+  --nav-bg: rgba(30, 20, 16, 0.72);
+  --game-sky: #243746;                   /* запасные цвета игры в тёмной теме */
+  --game-grass: #3f5a2a;
+
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-hover: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-highlight: rgba(255, 255, 255, 0.22);
+  --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --glass-glow: 0 0 22px rgba(255, 255, 255, 0.18);
+  --glass-text: var(--ink);
+
+  --panel-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+  --panel-glass-border: rgba(255, 255, 255, 0.16);
+  --panel-glass-highlight: rgba(255, 255, 255, 0.2);
+  --panel-glass-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --panel-line: rgba(244, 240, 235, 0.22);
+  --panel-hover: rgba(255, 255, 255, 0.1);
+}
+
+/* ═══ 2. БАЗА ═══ */
+
+/* СЛОИ (снизу вверх):
+     0  фон страницы (.page-bg, переменная --page-bg)
+     1  газетная текстура (body::after)
+     2  облака (.sky)
+     3  контент (main, footer)
+   Шапка, курсор, корова-путешественница и зерно лежат выше — их не трогаем. */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body.is-cow-locked { overflow: hidden; } /* пока корова не докручена, страница не скроллится */
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--brown); color: var(--paper); }
+
+/* ФОН СТРАНИЦЫ — слой 0. Цвет/градиент/картинка берутся из --page-bg.
+   Плавная смена: цвета анимируются через background-color, а setPageBg()
+   в script.js делает кросс-фейд, поэтому градиенты и картинки тоже плавные. */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--page-bg);
+  transition: background-color var(--page-bg-fade) ease;
+}
+.page-bg::after { /* вуаль --page-bg-scrim: поверх фона и кросс-фейда, под газетой */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--page-scrim);
+  transition: background-color var(--page-bg-fade) ease;
+}
+.page-bg__fade { /* временный слой для кросс-фейда (создаёт script.js) */
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--page-bg-fade) ease;
+}
+
+/* ГАЗЕТНАЯ БУМАГА (images/paper.jpg) — слой 1: поверх фона, под облаками
+   и контентом, поэтому видна на любом --page-bg.
+   Сила — --paper-strength, режим наложения — --paper-blend. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: var(--paper-blend);
+  opacity: var(--paper-strength);
+  background: url("images/paper.jpg") center / cover no-repeat;
+}
+
+/* ═══ 3. ОБЩИЙ ФОН: облака — слой 2 (свой фон не нужен, он в .page-bg) ═══ */
+.sky {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+.cloud {
+  position: absolute;
+  width: 300px;
+  opacity: var(--cloud-opacity);
+  animation: cloudDrift linear infinite;
+}
+.c1 { top: 10%; left: -20%; --s: 1;    animation-duration: 40s; }
+.c2 { top: 40%; left: -40%; --s: 0.7;  animation-duration: 56s; animation-delay: -20s; }
+.c3 { top: 70%; left: -30%; --s: 0.55; animation-duration: 72s; animation-delay: -40s; }
+@keyframes cloudDrift {
+  from { transform: translateX(0) scale(var(--s)); }
+  to   { transform: translateX(160vw) scale(var(--s)); }
+}
+
+/* Контент — слой 3, поверх облаков. Секции прозрачны — поэтому стыков нет */
+main, .footer { position: relative; z-index: 3; }
+
+/* ═══ 4. КУРСОР-КОРОВА (только на компьютере) ═══ */
+.bull-cursor { display: none; }
+@media (pointer: fine) {
+  * { cursor: none !important; }
+  .bull-cursor {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 68px;
+    height: 68px;
+    z-index: 10001;
+    pointer-events: none;
+    will-change: transform;              /* GPU-композитинг */
+    transform: translate3d(0, 0, 0);     /* финальный transform ставит JS */
+    transition: width 0.25s var(--ease), height 0.25s var(--ease);
+  }
+  .bull-cursor img { width: 100%; height: 100%; object-fit: contain; }
+  .bull-cursor.is-hover { width: 96px; height: 96px; }
+  /* .is-click больше не через CSS — масштаб ставится в JS, чтобы не конфликтовать с translate3d */
+}
+
+/* ═══ 5. СТЕКЛЯННЫЕ КНОПКИ — Liquid Glass (шапка, соцсети, «наверх», .cta в игре/форме/hero) ═══
+   Все значения — в переменных --glass-* (блок 1). Тёмная тема — [data-theme="dark"]. */
+.glass,
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  color: var(--glass-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  /* блик сверху + мягкая тень */
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+  transition: color 0.3s ease, background 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease,
+    box-shadow 0.35s ease, transform 0.2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.glass { padding: 10px 18px; font-size: 0.75rem; letter-spacing: 0.08em; }
+
+/* Наведение: сильнее размытие и свечение */
+.glass:hover,
+.cta:hover {
+  background: var(--glass-bg-hover);
+  -webkit-backdrop-filter: blur(var(--glass-blur-hover)) saturate(200%);
+  backdrop-filter: blur(var(--glass-blur-hover)) saturate(200%);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-glow), var(--glass-shadow);
+}
+/* Нажатие: лёгкое «вдавливание» */
+.glass:active,
+.cta:active {
+  transform: scale(0.96);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+/* На тёмных плашках (hero, «Услуги», подвал) текст стекла — светлый */
+
+/* Браузеры без backdrop-filter: делаем фон плотнее, чтобы текст читался */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .cta { background: rgba(255, 255, 255, 0.55); }
+  [data-theme="dark"] .glass, [data-theme="dark"] .cta { background: rgba(40, 30, 28, 0.7); }
+}
+
+.glass:focus-visible, .cta:focus-visible { outline: 2px solid var(--brown); outline-offset: 3px; }
+
+/* RIPPLE: в проекте сейчас нет ripple-эффекта. Если он у вас есть в другой версии,
+   эта защита полностью выключает его на тёмной теме (светлая — без изменений). */
+[data-theme="dark"] .ripple,
+[data-theme="dark"] .ripple::before,
+[data-theme="dark"] .ripple::after,
+[data-theme="dark"] .glass::before,
+[data-theme="dark"] .glass::after,
+[data-theme="dark"] .cta::before,
+[data-theme="dark"] .cta::after { animation: none !important; content: none; }
+[data-theme="dark"] .ripple { display: none !important; }
+
+/* ═══ 6. ШАПКА И МЕНЮ ═══ */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 80px;
+  padding: env(safe-area-inset-top) 28px 0;
+}
+.header__brand { margin-right: auto; font-size: 0.75rem; }
+.header__actions { display: flex; gap: 10px; align-items: center; }
+.burger { width: 44px; height: 44px; padding: 0; }
+.burger img { width: 50px; height: 50px; object-fit: contain; }
+
+/* Кнопка смены темы (рядом с бургером). Иконки — inline SVG, цвет берут от текста кнопки */
+.theme-toggle { width: 44px; height: 44px; padding: 0; }
+.theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle .i-sun { display: none; }                       /* в светлой теме показываем луну (→ тёмная) */
+[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+[data-theme="dark"] .theme-toggle .i-sun { display: block; }  /* в тёмной — солнце (→ светлая) */
+
+.nav {
+  position: fixed;
+  top: 90px;
+  right: 24px;
+  width: min(440px, calc(100vw - 48px));
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px 28px;
+  border-radius: 28px;
+  color: var(--nav-text);
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 500;
+  line-height: 1.1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px) scale(0.96);
+  transform-origin: top right;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s;
+}
+.nav.open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.nav a { transition: opacity 0.25s, transform 0.25s; }
+.nav a:hover { opacity: 0.75; transform: translateX(4px); }
+
+@media (max-width: 900px) {
+  .header { padding: env(safe-area-inset-top) 18px 0; }
+  .nav { left: 12px; right: 12px; width: auto; top: 76px; }
+}
+
+/* ═══ 7. ОБЩЕЕ: секции, заголовки, кнопки ═══ */
+.section { position: relative; padding: clamp(70px, 9vw, 140px) max(20px, 5vw); }
+.section__inner { max-width: var(--max); margin: auto; }
+
+.kicker {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: clamp(2.6rem, 8.5vw, 7.6rem);
+  font-weight: 700;
+  line-height: 0.9;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.cta {
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 26px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* Панели: коричневая (как меню) и светлая */
+.panel { padding: clamp(24px, 4vw, 56px); border-radius: 32px; }
+/* «Услуги» и подвал — стеклянные поверхности (Liquid Glass).
+   Цвет/фон — --services-bg и --footer-bg, остальное — --panel-glass-* */
+.panel--brown,
+.footer {
+  background: var(--services-bg);
+  color: var(--services-text);
+  border: 1px solid var(--panel-glass-border);
+  -webkit-backdrop-filter: blur(var(--panel-glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--panel-glass-blur)) saturate(180%);
+  /* блик по верхнему краю + мягкая тень */
+  box-shadow: inset 0 1px 0 var(--panel-glass-highlight), var(--panel-glass-shadow);
+}
+.footer { background: var(--footer-bg); color: var(--footer-text); }
+.panel--brown .kicker { border-color: var(--panel-line); }
+/* Без поддержки backdrop-filter делаем панели плотнее, чтобы текст читался */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .panel--brown, .footer { background: rgba(244, 240, 235, 0.85); }
+  [data-theme="dark"] .panel--brown, [data-theme="dark"] .footer { background: rgba(40, 30, 28, 0.85); }
+}
+/* «Образование» — цвета в --education-bg / --education-text */
+.panel--light { background: var(--education-bg); color: var(--education-text); }
+
+/* Плавная смена темы: класс .theme-fade на <html> ставит script.js на полсекунды */
+.theme-fade body,
+.theme-fade .section,
+.theme-fade .panel,
+.theme-fade .footer,
+.theme-fade .project,
+.theme-fade .game__score,
+.theme-fade .about__photo,
+.theme-fade .skill__bar,
+.theme-fade .field { transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease; }
+
+/* Плавное появление блоков при прокрутке */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* Фон целых секций (значения — в блоке «1. ЦВЕТА И ШРИФТЫ») */
+.hero { background: var(--bg-hero); }
+#about { background: var(--bg-about); }
+#portfolio { background: var(--bg-portfolio); }
+#skills { background: var(--bg-skills); }
+#cow-game { background: var(--bg-game); }
+#contact { background: var(--bg-contact); }
+
+/* ЦВЕТ ТЕКСТА СЕКЦИЙ. Внутри секции --ink переопределяется на её --…-text:
+   заголовки, контуры, линии и стеклянные кнопки сами подстраиваются под фон секции. */
+.hero, #about, #portfolio, #skills, #cow-game, #contact {
+  color: var(--ink);
+  --line: color-mix(in srgb, var(--ink) 18%, transparent);
+  --glass-text: var(--ink);
+}
+.hero { --ink: var(--hero-text); }
+#about { --ink: var(--about-text); }
+#portfolio { --ink: var(--portfolio-text); }
+#skills { --ink: var(--skills-text); }
+#cow-game { --ink: var(--game-text); }
+#contact { --ink: var(--contact-text); }
+.panel--light, .panel--brown, .footer { --line: color-mix(in srgb, var(--ink) 18%, transparent); }
+.panel--light { --ink: var(--education-text); }
+.panel--brown { --ink: var(--services-text); }
+.footer { --ink: var(--footer-text); }
+
+/* ═══ 8. ИНТРО С КОРОВОЙ ═══ */
+.cow-intro {
+  position: relative;
+  height: 100svh;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cow-intro__title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4vw;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.cow-intro__title img { width: min(120vw, 1700px); filter: var(--intro-logo-filter); }
+.cow-intro__stage { position: relative; z-index: 2; }
+.cow-intro__stage.is-handoff { opacity: 0; transition: opacity 0.45s var(--ease); } /* корова «улетает» в travel-cow */
+.cow-intro__bob { animation: bob 3.5s ease-in-out infinite; }
+#cow { width: min(320px, 48vw); filter: drop-shadow(0 20px 20px rgba(17, 17, 17, 0.25)); }
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-14px) rotate(2deg); }
+}
+.cow-intro__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -30px;
+  width: 52%;
+  height: 18px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(17, 17, 17, 0.45), transparent 70%);
+  filter: blur(6px);
+}
+
+/* Круговой индикатор */
+.cow-progress {
+  position: absolute;
+  bottom: calc(40px + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 3;
+  width: 150px;
+  height: 150px;
+  display: grid;
+  place-items: center;
+  transform: translateX(-50%);
+  transition: opacity 0.4s var(--ease);
+}
+.cow-progress.hide { opacity: 0; pointer-events: none; }
+.cow-progress svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.cow-progress__bg { fill: none; stroke: var(--line); stroke-width: 4; }
+.cow-progress__bar {
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 289;
+  stroke-dashoffset: 289;
+  transition: stroke-dashoffset 0.15s linear;
+}
+.cow-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.cow-hint__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--brown); animation: blink 1.2s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: 0.25; transform: scale(0.6); } }
+@media (max-width: 700px) {
+  .cow-intro__title img { width: 150vw; }
+  .cow-progress { width: 120px; height: 120px; }
+  #cow { width: min(250px, 50vw); }
+  .cloud { width: 200px; }
+}
+
+/* ═══ 9. HERO ═══ */
+.hero { min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; }
+.hero .section__inner { width: 100%; }
+.hero__script {
+  position: absolute;
+  top: 8%;
+  right: 10%;
+  font-family: var(--font-title);
+  font-size: clamp(3rem, 11vw, 10rem);   /* ← уменьшено (было 5rem, 18.5vw, 17rem) */
+  line-height: 0.9;
+  color: var(--hero-script);
+  opacity: 0.12;
+  transform: rotate(-6deg);
+  pointer-events: none;
+}
+.hero .title { font-size: clamp(2rem, 7.5vw, 6.5rem); line-height: 0.9; }  /* ← уменьшено (было 2.9rem, 12.5vw, 12.5rem) */
+.hero .title span { display: block; }
+.hero__surname { margin-left: 8vw; } /* вторая строка (фамилия) сдвинута вправо */
+.hero__meta { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; max-width: 900px; margin-top: 40px; }
+.hero__meta p { max-width: 420px; margin: 0; font-size: clamp(0.9rem, 1.3vw, 1.1rem); line-height: 1.35; }  /* ← уменьшено (было 1rem, 1.7vw, 1.35rem) */
+@media (max-width: 900px) {
+  .hero__meta { display: block; }
+  .hero__meta .cta { margin-top: 18px; }
+  .hero__surname { margin-left: 2vw; }
+}
+
+/* ═══ 10. ОБО МНЕ ═══ */
+.about__grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 8vw; align-items: end; }
+.about__copy { font-size: clamp(1.2rem, 3vw, 2.6rem); line-height: 1.15; }
+.about__copy strong { font-family: var(--font-display); text-transform: uppercase; }
+.about__photo {
+  display: grid;
+  place-items: center;
+  min-height: 520px;
+  border-radius: 32px;
+  background: var(--paper-2);
+  color: var(--brown);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 5rem);
+  text-transform: uppercase;
+}
+@media (max-width: 900px) {
+  .about__grid { grid-template-columns: 1fr; gap: 40px; }
+  .about__photo { min-height: 360px; }
+}
+
+/* ═══ 11. УСЛУГИ ═══ */
+.service {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--panel-line);
+  font-size: 2rem;
+  transition: padding 0.35s, background 0.35s;
+}
+.service:last-child { border-bottom: 0; }
+.service { cursor: pointer; } /* строка услуги — ссылка на форму заявки */
+.service:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; border-radius: 12px; }
+.service:hover { padding-left: 20px; background: var(--panel-hover); }
+.service__num { font-family: var(--font-accent); font-size: 1.4rem; }
+.service__name { font-family: var(--font-display); font-size: clamp(1.6rem, 6vw, 5.5rem); font-weight: 700; line-height: 0.95; text-transform: uppercase; }
+
+/* ═══ 12. РАБОТЫ ═══ */
+.portfolio__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 50px; }
+.project { overflow: hidden; border-radius: 28px; background: var(--paper-2); }
+.project__media {
+  height: 420px;
+  overflow: hidden;
+  background: var(--paper-2);   /* было var(--brown) — теперь спокойный фон под contain */
+}
+.project__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;          /* было cover — больше ничего не обрезается */
+  object-position: center;
+  transition: transform 0.8s var(--ease);
+}
+.project:hover .project__media img { transform: scale(1.06); }
+.project__info { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 22px; }
+.project__title { font-family: var(--font-display); font-size: clamp(1.3rem, 3vw, 2.4rem); font-weight: 700; text-transform: uppercase; }
+.project__tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brown); }
+.project__desc { grid-column: 1 / -1; max-width: 600px; line-height: 1.5; }
+@media (max-width: 900px) {
+  .portfolio__grid { grid-template-columns: 1fr; }
+  .project__media { height: 300px; }
+}
+
+/* ═══ 13. НАВЫКИ ═══ */
+.skills__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 80px; margin-top: 50px; }
+.skill { padding: 22px 0; border-top: 1px solid var(--line); }
+.skill__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: var(--brown);
+  color: var(--paper);
+  font-family: var(--font-display);
+}
+.skill__head { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 12px; font-weight: 700; }
+.skill__name { font-family: var(--font-display); font-size: clamp(1rem, 2vw, 1.8rem); text-transform: uppercase; }
+.skill__bar { height: 10px; border-radius: 999px; background: var(--paper-2); overflow: hidden; }
+.skill__fill { width: 0; height: 100%; border-radius: 999px; background: var(--brown); transition: width 1.4s var(--ease); }
+@media (max-width: 900px) { .skills__grid { grid-template-columns: 1fr; } }
+
+/* ═══ 14. ОБРАЗОВАНИЕ ═══ */
+.edu-item { padding: 22px 0; border-bottom: 1px solid var(--line); }
+.edu-item:last-child { border-bottom: 0; }
+.edu-item h3 { margin: 0; font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 3.4rem); text-transform: uppercase; }
+.edu-item p { max-width: 650px; margin: 0.6rem 0 0; line-height: 1.55; }
+
+/* ═══ 15. МИНИ-ИГРА ═══ */
+.game__head { display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: end; }
+.game__hint { max-width: 540px; margin: 30px 0 0; font-size: clamp(0.95rem, 1.8vw, 1.3rem); line-height: 1.4; }
+.game__score { min-width: 150px; padding: 18px 24px; border-radius: 24px; background: var(--paper-2); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.game__score strong { display: block; margin-top: 12px; font-family: var(--font-display); font-size: 3.5rem; line-height: 0.9; }
+
+.game__arena {
+  position: relative;
+  height: 520px;
+  margin-top: 50px;
+  overflow: hidden;
+  border-radius: 32px;
+  /* Запасной вариант: если sky.png / grass.png нет — виден этот сплошной цвет */
+  background: linear-gradient(var(--game-sky) 0 70%, var(--game-grass) 70% 100%);
+}
+/* Небо (верхние 70%) и трава (нижние 30%) — те же пропорции, что были у градиента */
+.game__arena::before,
+.game__arena::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.game__arena::before { top: 0; height: 70%; background-image: var(--game-sky-img); background-position: center bottom; }
+.game__arena::after { bottom: 0; height: 30%; background-image: var(--game-grass-img); background-position: center top; }
+.game__cow {
+  --tilt: 0deg;
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 130px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: translate(-50%, -50%) rotate(var(--tilt));
+  transition: left 0.28s var(--ease), top 0.28s var(--ease), transform 0.18s;
+}
+.game__cow.hit { animation: hit 0.18s ease-out; }
+@keyframes hit { 50% { transform: translate(-50%, -50%) scale(1.22) rotate(var(--tilt)); } }
+.game__message {
+  z-index: 1;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--brown);
+  color: var(--paper);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  transform: translateX(-50%);
+}
+.game__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 22px; }
+.game__stat { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.game__stat strong { margin-left: 6px; font-family: var(--font-display); font-size: 1.6rem; }
+@media (max-width: 900px) {
+  .game__head { grid-template-columns: 1fr; }
+  .game__score { justify-self: start; }
+  .game__arena { height: 400px; }
+  .game__cow { width: 100px; }
+  .game__message { width: 90%; }
+}
+
+/* ═══ 16. КОНТАКТЫ ═══ */
+.contact__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8vw; align-items: start; }
+/* Когда сюда приезжают по ссылке с услуги, форма не прячется под шапкой */
+#contactForm { scroll-margin-top: 120px; }
+#contact .title { font-size: clamp(2rem, 4.2vw, 4.7rem); word-break: normal; }
+.socials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.form { display: grid; gap: 14px; align-content: start; }
+.field { color: var(--ink); width: 100%; padding: 16px 0; border: 0; border-bottom: 2px solid var(--brown); background: transparent; outline: 0; font-size: 16px; }
+textarea.field { min-height: 140px; resize: vertical; }
+.field::placeholder { color: color-mix(in srgb, var(--ink) 55%, transparent); }
+.form .cta { justify-self: start; }
+@media (max-width: 900px) { .contact__grid { grid-template-columns: 1fr; gap: 40px; } }
+
+/* ═══ 17. ПОДВАЛ ═══ */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  padding: 50px max(20px, 5vw) calc(40px + env(safe-area-inset-bottom));
+  border-bottom: 0;
+  border-radius: 40px 40px 0 0;
+}
+.footer__logo { font-family: var(--font-display); font-size: clamp(2.4rem, 10vw, 9rem); font-weight: 700; line-height: 0.85; text-transform: uppercase; }
+.footer__small { font-size: 0.7rem; letter-spacing: 0.1em; line-height: 1.6; text-transform: uppercase; }
+@media (max-width: 700px) { .footer { flex-direction: column; align-items: flex-start; } }
+
+/* ═══ 18. ПОЛОСА ПРОКРУТКИ И КНОПКА «НАВЕРХ» ═══ */
+.progress { position: fixed; top: 0; left: 0; width: 0; height: 4px; background: var(--brown); z-index: 10002; }
+.top {
+  position: fixed;
+  right: 22px;
+  bottom: calc(22px + env(safe-area-inset-bottom));
+  z-index: 900;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  font-size: 1.1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.35s, transform 0.35s;
+}
+.top.show { opacity: 1; transform: none; }
+
+/* ═══ 19. КОРОВА-ПУТЕШЕСТВЕННИЦА (едет за прокруткой) ═══ */
+.travel-cow {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 850;
+  width: clamp(80px, 10vw, 150px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  will-change: left, top, transform;   /* ← добавил: GPU-композитинг */
+  transition: left 1.9s cubic-bezier(0.45, 0.05, 0.2, 1), top 1.9s cubic-bezier(0.45, 0.05, 0.2, 1),
+    transform 1.4s cubic-bezier(0.45, 0.05, 0.2, 1), opacity 0.7s var(--ease);
+}
+.travel-cow.is-visible { opacity: 1; }
+.travel-cow__inner { position: relative; transition: transform 0.55s var(--ease); }
+.travel-cow.is-mirrored .travel-cow__inner { transform: scaleX(-1); }
+.travel-cow__inner img { width: 100%; filter: drop-shadow(0 16px 18px rgba(17, 17, 17, 0.28)); animation: travelBob 4.2s ease-in-out infinite; }
+@keyframes travelBob {
+  0%, 100% { transform: translateY(0) rotate(-1.6deg); }
+  50%      { transform: translateY(-9px) rotate(1.6deg); }
+}
+.travel-cow__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 62%;
+  height: 16px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(17, 17, 17, 0.45), transparent 72%);
+  filter: blur(5px);
+}
+
+/* ═══ 20. ДЛЯ ТЕХ, КТО ОТКЛЮЧИЛ АНИМАЦИИ ═══ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* ═══════════════════════════════════════════════════════════════════════
+   LIQUID GLASS ДЛЯ КАРТОЧЕК ПОРТФОЛИО
+   Реальные классы из index.html + script.js:
+     .project      — карточки работ
+     .edu-item     — блоки образования
+     .skill        — блоки навыков
+     .game__score  — счётчик игры
+     .about__photo — заглушка фото
+     .service      — строки услуг
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.project,
+.edu-item,
+.skill,
+.game__score,
+.about__photo {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.10);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  backdrop-filter: blur(14px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.project::before,
+.edu-item::before,
+.skill::before,
+.game__score::before,
+.about__photo::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 45%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.18), transparent);
+  border-radius: 20px 20px 0 0;
+  pointer-events: none;
+}
+
+.project { padding: 0; }
+.edu-item { padding: 24px; margin: 12px 0; border-bottom: 0 !important; }
+.skill { padding: 22px; border-top: 0 !important; }
+.game__score { padding: 18px 24px; }
+.about__photo { padding: 0; }
+
+[data-theme="dark"] .project,
+[data-theme="dark"] .edu-item,
+[data-theme="dark"] .skill,
+[data-theme="dark"] .game__score,
+[data-theme="dark"] .about__photo {
+  background: rgba(40, 30, 28, 0.35);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.project:hover,
+.edu-item:hover,
+.skill:hover,
+.about__photo:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 18px 48px rgba(0, 0, 0, 0.35),
+    0 0 32px rgba(255, 255, 255, 0.14);
+}
+.game__score:hover { border-color: rgba(255, 255, 255, 0.45); }
+
+.project,
+.edu-item { cursor: pointer; }
+.project:focus-visible,
+.edu-item:focus-visible,
+.skill:focus-visible {
+  outline: 2px solid var(--brown);
+  outline-offset: 4px;
+}
+
+.project > *,
+.edu-item > *,
+.skill > *,
+.game__score > *,
+.about__photo > * { position: relative; z-index: 1; }
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .project,
+  .edu-item,
+  .skill,
+  .game__score,
+  .about__photo { background: rgba(244, 240, 235, 0.85); }
+  [data-theme="dark"] .project,
+  [data-theme="dark"] .edu-item,
+  [data-theme="dark"] .skill,
+  [data-theme="dark"] .game__score,
+  [data-theme="dark"] .about__photo { background: rgba(40, 30, 28, 0.85); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project,
+  .edu-item,
+  .skill,
+  .game__score,
+  .about__photo { transition: none; }
+  .project:hover,
+  .edu-item:hover,
+  .skill:hover,
+  .about__photo:hover { transform: none; }
+}
+/* Фото на фоне панели «Обо мне» */
+.about__photo {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  background-image: url("images/photo.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: transparent;       /* прячем старый текст «Your photo» */
+}
+
+/* Стекло поверх фото — в том же стиле, что у остальных карточек */
+.about__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0.04) 55%,
+    rgba(0, 0, 0, 0.10)
+  );
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.10);
+}
+
+/* Тёмная тема — стекло чуть темнее, фото остаётся видимым */
+[data-theme="dark"] .about__photo::after {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.10),
+    rgba(255, 255, 255, 0.02) 55%,
+    rgba(0, 0, 0, 0.20)
+  );
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Без поддержки backdrop-filter — плотная вуаль, чтобы читалось */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .about__photo::after {
+    background: linear-gradient(
+      135deg,
+      rgba(244, 240, 235, 0.55),
+      rgba(244, 240, 235, 0.25)
+    );
+  }
+  [data-theme="dark"] .about__photo::after {
+    background: linear-gradient(
+      135deg,
+      rgba(40, 30, 28, 0.55),
+      rgba(40, 30, 28, 0.25)
+    );
+  }
+}

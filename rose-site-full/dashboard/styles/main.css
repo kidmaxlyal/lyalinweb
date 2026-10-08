@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ДАШБОРД «ПОЕЗДКА» — страница и сетка
+   Цвета, шрифты, стекло, меню, облака и тёмная тема берутся из ../style.css.
+   Здесь только то, что есть у дашборда и нет у портфолио.
+   Вёрстка mobile-first: базовые стили — для телефона, @media (min-width) — для широких экранов.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+main { padding-top: 0; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+[hidden] { display: none !important; }
+
+/* Пункт меню текущей страницы */
+.nav a[aria-current="page"] { opacity: 0.55; }
+
+/* ═══ ЗАГОЛОВОК СТРАНИЦЫ ═══ */
+.dash-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 104px max(20px, 5vw) 28px; /* сверху место под фиксированную шапку */
+}
+.dash-hero__inner { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; }
+.dash-hero__row { display: flex; flex-direction: column; gap: 20px; }
+.dash-hero__lead { max-width: 36ch; margin: 18px 0 0; font-size: clamp(1rem, 2.6vw, 1.3rem); line-height: 1.4; }
+
+/* Логотип — большой бледный фон (цвета логотипа не трогаем) */
+.dash-hero__logo {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: -40%;
+  width: min(150vw, 1100px);
+  max-width: none;
+  opacity: 0.14;
+  filter: var(--intro-logo-filter);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Корова: покачивается (анимация bob — из ../style.css), по клику крутится (main.js) */
+.dash-cow {
+  position: relative;
+  align-self: flex-end;
+  width: clamp(110px, 28vw, 230px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  animation: bob 3.5s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+.dash-cow img { width: 100%; filter: drop-shadow(0 16px 18px rgba(17, 17, 17, 0.28)); }
+.dash-cow__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 62%;
+  height: 16px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(17, 17, 17, 0.45), transparent 72%);
+  filter: blur(5px);
+}
+.dash-cow:focus-visible { outline: 2px solid var(--brown); outline-offset: 6px; border-radius: 24px; }
+
+/* ═══ СЕТКА ВИДЖЕТОВ: на телефоне одна колонка ═══ */
+.dashboard-grid {
+  counter-reset: widget; /* нумерация 01, 02… в заголовках (см. components.css) */
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 max(20px, 5vw) 70px;
+}
+
+/* От планшета: две колонки */
+@media (min-width: 760px) {
+  .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .dash-hero { padding-top: 120px; }
+  .dash-hero__row { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  .dash-hero__logo { right: -8%; }
+}
