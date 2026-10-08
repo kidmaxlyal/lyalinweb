@@ -315,3 +315,20 @@
 blockquote { margin: 0; font-size: clamp(1.2rem, 3.2vw, 1.6rem); line-height: 1.35; }
 blockquote::before { content: "“"; display: block; margin-bottom: -0.4em; font-family: var(--font-accent); font-size: 3.2rem; line-height: 1; color: var(--brown); }
 .author { margin: 6px 0 0; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
+
+/* ── 12. Расписание ── */
+.timetable-list { display: grid; gap: 8px; width: 100%; margin: 0; padding: 0; list-style: none; }
+.timetable-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+}
+.timetable-time { font-family: var(--font-display); font-size: 1.1rem; white-space: nowrap; color: var(--brown); }
+.timetable-item strong { display: block; overflow-wrap: anywhere; }
+.timetable-meta { display: block; font-size: 0.8rem; opacity: 0.7; }
+.widget--timetable .api-content { justify-content: flex-start; }
+@media (min-width: 760px) { .widget--timetable { grid-column: 1 / -1; } }
