@@ -2,6 +2,7 @@ import ToDoWidget from "./ToDoWidget.js";
 import WeatherWidget from "./WeatherWidget.js";
 import ScheduleWidget from "./ScheduleWidget.js"; // «Страна назначения» (REST Countries)
 import QuoteWidget from "./QuoteWidget.js";
+import TimetableWidget from "./TimetableWidget.js"; // «Моё расписание» (schedule.sutd.ru)
 
 // Тип виджета → его класс.
 const WIDGET_TYPES = {
@@ -9,6 +10,7 @@ const WIDGET_TYPES = {
     country: ScheduleWidget,  // REST Countries
     todo: ToDoWidget,         // локальный (localStorage)
     quote: QuoteWidget,       // DummyJSON + MyMemory
+    timetable: TimetableWidget, // моё расписание (schedule.sutd.ru)
 };
 
 export default class Dashboard {
